@@ -1,3 +1,23 @@
 [
-    
+    {
+        "name": "GPIO_D5",
+        "type": "bool",
+        "direction": "display"
+    },
+    {
+        "name": "GPIO_D6",
+        "type": "bool",
+        "direction": "display"
+    },
+    {
+        "name": "GPIO_D7",
+        "type": "bool",
+        "direction": "display"
+    }
+    {
+        "name": "IP",
+        "type": "char",
+        "length": 32,
+        "direction": "display"
+    }
 ]
