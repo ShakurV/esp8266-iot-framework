@@ -233,6 +233,12 @@ String WifiManager::SSID()
     return WiFi.SSID();
 }
 
+//return current IP
+String WifiManager::IP()
+{    
+    return ip.toString();
+}
+
 //captive portal loop
 void WifiManager::loop()
 {

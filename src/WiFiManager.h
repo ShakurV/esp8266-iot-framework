@@ -35,6 +35,7 @@ public :
     void forget();
     bool isCaptivePortal();
     String SSID();
+    String IP();
     void setNewWifi(String newSSID, String newPass);
     void setNewWifi(String newSSID, String newPass, String newIp, String newSub, String newGw, String newDns);
     void forgetWiFiFunctionCallback( std::function<void()> func );
