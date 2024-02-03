@@ -1,23 +1,85 @@
 [
     {
-        "name": "GPIO_D5",
-        "type": "bool",
-        "direction": "display"
+        "text": "This is a header",
+        "type": "header"
     },
     {
-        "name": "GPIO_D6",
-        "type": "bool",
-        "direction": "display"
+        "type": "separator"
     },
     {
-        "name": "GPIO_D7",
-        "type": "bool",
-        "direction": "display"
-    }
+        "text": "This label says there's a separator above me ^",
+        "type": "label"
+    },
     {
-        "name": "IP",
-        "type": "char",
-        "length": 32,
+        "name": "This is a value",
+        "type": "float",
+        "digits": 45
+    },
+    {
+        "name": "This is a text input",
+        "type": "text",
+        "control": "text",
+        "direction": "control"
+    },
+    {
+        "name": "This is another text input",
+        "control": "text",
+        "direction": "control"
+    },
+    {
+        "name": "This is a check box input",
+        "control": "checkbox",
+        "direction": "control"
+    },
+    {
+        "name": "This is a number input",
+        "control": "number"
+    },
+    {
+        "name": "This is a number input with constraints",
+        "control": "number",
+        "min": 5,
+        "max": 55,
+        "step": 10,
+        "direction": "control"
+    },
+    {
+        "name": "This is a slider input",
+        "control": "slider",
+        "direction": "control"
+    },
+    {
+        "name": "This is a slider input with constraints",
+        "control": "slider",
+        "min": 5,
+        "max": 55,
+        "step": 10,
+        "direction": "control"
+    },
+    {
+        "name": "This is a select input",
+        "control": "select",
+        "options":[1,2,3],
+        "direction": "control"
+    },
+    {
+        "name": "The same select input with labels",
+        "control": "select",
+        "options":[1,2,3],
+        "optionLabels":["one","two","three"],
+        "direction": "control"
+    },
+    {
+        "name": "This is a colour",
+        "type": "color",
+        "value": "0xFFFFFF",
+        "direction": "display",
+        "display": "table"
+    },
+    {
+        "name": "This is a colour",
+        "type": "color",
+        "value": "0xFFFFFF",
         "direction": "display"
     }
 ]
