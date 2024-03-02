@@ -9,6 +9,7 @@ import { ConfigPage } from "./comp/ConfigPage";
 import { DashboardPage } from "./comp/DashboardPage";
 import { FilePage } from "./comp/FilePage";
 import { FirmwarePage } from "./comp/FirmwarePage";
+import { TimingPage } from "./comp/TimingPage";
 
 import { bin2obj } from "./functions/configHelpers";
 
@@ -81,6 +82,7 @@ function Root() {
 
                 <Hamburger onClick={() => setMenu(!menu)} />
                 <Menu className={menu ? "" : "menuHidden"}>
+                    <li><NavLink onClick={() => setMenu(false)} exact to="/timing">{loc.titleTiming}</NavLink></li>
                     <li><NavLink onClick={() => setMenu(false)} exact to="/">{loc.titleWifi}</NavLink></li>
                     <li><NavLink onClick={() => setMenu(false)} exact to="/dashboard">{loc.titleDash}</NavLink></li>
                     <li><NavLink onClick={() => setMenu(false)} exact to="/config">{loc.titleConf}</NavLink></li>
@@ -105,6 +107,12 @@ function Root() {
                         <DashboardPage API={url} 
                             socket={socket}
                             requestData={() => {return displayData;}} />
+                    </Route>
+                    <Route exact path="/timing">
+                        <TimingPage API={url} 
+                            socket={socket}
+                            requestData={() => {return displayData;}}
+                            />
                     </Route>
                     <Route exact path="/firmware">
                         <FirmwarePage API={url} />

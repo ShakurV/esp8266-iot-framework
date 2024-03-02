@@ -59,21 +59,6 @@ const Control = styled.p`
     }
 `;
 
-const Table = styled.p`
-    td, th{
-        border: 1px solid black;
-        border-collapse: collapse;
-        table-layout: fixed;
-        width: 200px;
-        }
-
-    table{
-        border: 1px solid black;
-        border-collapse: collapse;
-        table-layout: fixed;
-        }
-`;
-
 const Layout = styled.div`
     * {
         width:calc(660px + 3em);
@@ -256,67 +241,6 @@ export function DashboardItems(props) {
                                 conditionalAttributes={conditionalAttributes} 
                             />                            
                         </Control>
-                    </>;
-                    break;
-
-                case "table":
-                    confItems = <>{confItems}
-                        <Table>
-                            <table>
-                                <tr>
-                                    <th>
-                                        #
-                                    </th>
-                                    <th>
-                                        Driver
-                                    </th>
-                                    <th>
-                                        Car
-                                    </th>
-                                    <th>
-                                        Class
-                                    </th>
-                                    <th>
-                                        Run 1
-                                    </th>
-                                    <th>
-                                        Run 2
-                                    </th>
-                                    <th>
-                                        Run 3
-                                    </th>
-                                    <th>
-                                        Run 4
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        14
-                                    </td>
-                                    <td>
-                                        Abdul Sayed
-                                    </td>
-                                    <td>
-                                        Toyota Tazz
-                                    </td>
-                                    <td>
-                                        B
-                                    </td>
-                                    <td>
-                                        DNF
-                                    </td>
-                                    <td>
-                                        01:06.430
-                                    </td>
-                                    <td>
-                                        On Track
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                </tr>
-                            </table>
-                        </Table>
                     </>;
                     break;
 
