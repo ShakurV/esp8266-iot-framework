@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { Form } from "./UiComponents";
 import styled from "styled-components";
 
 const Live = styled.span`
@@ -55,8 +54,12 @@ export function TimingPage(props) {
     const [counter, setCounter] = useState(0);
     const [socketStatus, setSocketStatus] = useState(0);
 
+    const [data, setData] = useState([]); // State to store API response
+    const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+    const [error, setError] = useState(null); // State to handle errors
+
     useEffect(() => {
-        document.title = loc.titleDash;
+        document.title = loc.titleTiming;
     }, []);
 
     useEffect(() => {
@@ -70,10 +73,6 @@ export function TimingPage(props) {
         return () => clearTimeout(timer);
 
     }, [counter]);
-
-    const [data, setData] = useState([]); // State to store API response
-    const [isLoading, setIsLoading] = useState(false); // State for loading indicator
-    const [error, setError] = useState(null); // State to handle errors
   
     // Function to fetch data from the API
     const fetchData = async () => {
@@ -81,7 +80,7 @@ export function TimingPage(props) {
       setError(null); // Clear any previous errors
   
       try {
-        const response = await fetch("http://192.168.4.1/api/event/getTimeSheet");
+        const response = await fetch(`${props.API}/api/event/getTimeSheet`);
         if (!response.ok) {
           throw new Error(`API request failed with status ${response.status}`);
         }
@@ -115,7 +114,7 @@ export function TimingPage(props) {
     return (
       <>
         <h2>
-          {loc.titleDash} {socketStatus != 0 ? (
+          {loc.titleTiming} {socketStatus != 0 ? (
             socketStatus === 1 ? (
               <Live>{loc.dashLive}</Live>
             ) : (
@@ -129,21 +128,7 @@ export function TimingPage(props) {
         {error && <p>Error: {error}</p>}
         {data.length > 0 && (
           <Table>
-            {/* Table header (replace with hard-coded values if desired) */}
-            {/*<thead>
-              <tr>
-                <th>#</th>
-                <th>Driver</th>
-                <th>Navigator</th>
-                <th>Class</th>
-                <th>Vehicle</th>
-                <th>Run 1</th>
-                <th>Run 2</th>
-                <th>Run 3</th>
-                <th>Run 4</th>
-              </tr>
-        </thead>*/}
-            <tbody>{renderTableBody()}</tbody>
+            <table>{renderTableBody()}</table>
           </Table>
         )}
         {/* Rest of your form or other elements */}
@@ -151,10 +136,7 @@ export function TimingPage(props) {
     );
 }
 /*
-TimingPage.propTypes = {
-    API: PropTypes.string,
-    socket: PropTypes.object,
-};
+        Things are working nice, just add the controls and make the page refresh the table at like 1 FPS or something
 */
 TimingPage.propTypes = {    
     requestData: PropTypes.func,
