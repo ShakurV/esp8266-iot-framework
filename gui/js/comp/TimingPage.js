@@ -3,6 +3,12 @@ import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
+const baseFontSize = '16px';
+const baseSpacing = '10px';
+const baseBorderRadius = '5px';
+const baseBackgroundColor = '#f5f5f5';
+const baseBorderColor = '#ddd';
+
 const Live = styled.span`
     color:#c4e052 !important;
     border: 1px solid #c4e052;
@@ -39,15 +45,6 @@ const TableWrapper = styled.div`
   margin-top: 20px;
 `;
 
-const TableHeader = styled.th`
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-bottom: 2px solid #ddd;
-  text-align: left;
-  font-weight: bold;
-  background-color: #f5f5f5;
-`;
-
 const TableRow = styled.tr`
   padding: 10px;
   border: 1px solid #ddd;
@@ -74,30 +71,91 @@ const StyledForm = styled.form`
   background-color: #f5f5f5;
 `;
 
+const StyledControlPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${baseSpacing};
+  margin: 20px auto;
+  width: 600px; /* Adjust width as needed for different screen sizes */
+  border: 1px solid ${baseBorderColor};
+  border-radius: ${baseBorderRadius};
+  padding: ${baseSpacing};
+  background-color: ${baseBackgroundColor};
+`;
+
 const StyledLabel = styled.label`
   display: flex;
   align-items: center;
   font-weight: bold;
+  font-size: ${baseFontSize};
+  margin-bottom: 5px;
+`;
+
+const StyledSelect = styled.select`
+  padding: 5px;
+  border: 1px solid ${baseBorderColor};
+  border-radius: ${baseBorderRadius};
+  flex: 1;
+  font-size: ${baseFontSize};
 `;
 
 const StyledInput = styled.input`
   padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid ${baseBorderColor};
+  border-radius: ${baseBorderRadius};
   flex: 1;
+  font-size: ${baseFontSize};
 `;
 
 const StyledButton = styled.button`
-  padding: 10px 20px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 5px;
-  background-color: #4CAF50;
+  border-radius: ${baseBorderRadius};
+  background-color: ${({ disabled }) => (disabled ? '#ccc' : '#4CAF50')};
   color: white;
   font-weight: bold;
+  font-size: ${baseFontSize};
   cursor: pointer;
+  &:disabled {
+    opacity: 0.5;
+  }
 `;
 
+const StyledSpan = styled.span`
+  font-size: ${baseFontSize};
+`;
+
+const StyledOption = styled.option`
+  /* Add your desired styles here */
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  /* Optional: Hover and selected states */
+  &:hover {
+    background-color: #f5f5f5;
+  }
+
+  &[selected] {
+    background-color: #ddd;
+  }
+`;
+
+
+export {
+  StyledControlPanel,
+  StyledLabel,
+  StyledSelect,
+  StyledInput,
+  StyledButton,
+  StyledSpan,
+  StyledOption
+};
+
 import Config from "../configuration.json";
+import { TimingController } from "./TimingController";
 let loc;
 if (Config.find(entry => entry.name === "language")) {
     loc = require("./../lang/" + Config.find(entry => entry.name === "language").value + ".json");
@@ -180,8 +238,7 @@ export function TimingPage(props) {
         setRaceClass("");
         setVehicle("");
       
-        // Re-fetch data to update the table
-        fetchData();
+        location.reload();
       } catch (err) {
         console.error("Error adding driver:", err);
         setError(err.message);
@@ -228,6 +285,12 @@ export function TimingPage(props) {
           </TableWrapper>
         )}
 
+        <h3>Controller</h3>
+        <TimingController API={props.API} 
+                            socket={props.socket}
+                            sheetRefreshFunction={fetchData}
+                            />
+
         <h3>Add Entry Form</h3>
         {/* Form for adding new driver */}
         <StyledForm onSubmit={handleSubmit}>
@@ -269,7 +332,8 @@ export function TimingPage(props) {
           <StyledButton  type="submit">Add Entry</StyledButton >
         </StyledForm>
         {/* Rest of your form or other elements */}
-      </>
+        </>
+
     );
 }
 
