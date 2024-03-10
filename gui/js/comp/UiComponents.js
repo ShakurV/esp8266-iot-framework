@@ -126,7 +126,7 @@ export const Header = styled(HeaderSrc)`
 export const Page = styled.div`
         margin:0px auto;
         padding:0em 1em;
-        max-width:1024px;
+        max-width:1900px;
         clear:both;
 `;
 

@@ -1,9 +1,3 @@
 [
-    {
-        "name": "This is a colour",
-        "type": "color",
-        "value": "0xFFFFFF",
-        "direction": "table",
-        "display": "table"
-    }
+
 ]

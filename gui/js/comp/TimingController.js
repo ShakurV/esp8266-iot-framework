@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from 'styled-components';
-import {StyledControlPanel, StyledLabel, StyledSelect, StyledInput, StyledButton, StyledSpan, StyledOption} from "./TimingPage";
+import {StyledControl, StyledForm, StyledLabel, StyledSelect, StyledInput, StyledButton, StyledSpan, StyledOption} from "./TimingPage";
 
 export function TimingController(props) {
   const [data, setData] = useState([]); // State to store API response
@@ -77,6 +76,8 @@ export function TimingController(props) {
 
   // Function to handle button clicks (replace with actual API calls)
   const handleStartTimer = async () => {
+    console.log("ligma");
+
     if (status !== 'Standby') {
       return; // Prevent action if not in Standby state
     }
@@ -89,9 +90,7 @@ export function TimingController(props) {
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
-  
-      const data = await response.json(); // Handle response data (if needed)
-  
+    
       console.log("Start timer response:", data); // Log the response for debugging
   
       // Clear the time field (replace with actual logic based on your UI)
@@ -115,18 +114,14 @@ export function TimingController(props) {
       const baseURL = `${props.API}/api/event/addTime`;
       const url = `${baseURL}?driverNumber=${driverNumber}&time=${lastTime}`;
   
-      console.log(url);
-
       const response = await fetch(url, {
         method: "POST",
       });
-
-      console.log(response);
   
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }else{
-        props.sheetRefreshFunction();
+        props.onUpdateData(true);
       }
   
       // You might want to display a success message or update UI state here
@@ -169,10 +164,15 @@ export function TimingController(props) {
     fetchLastTime();
   };
 
+  const handleChange = (event) => {
+    setLastTime(event.target.value);
+  };
+
   // ... rest of your component (e.g., socket status)
 
   return (
-    <StyledControlPanel>
+    <StyledControl>
+      <h3>Controller</h3>
       {/* Status */}
       <div>
         <StyledLabel htmlFor="status">Status:</StyledLabel>
@@ -183,18 +183,19 @@ export function TimingController(props) {
         <StyledLabel htmlFor="driver">Driver:</StyledLabel>
         <StyledSelect id="driver" onChange={handleDriverChange} value={driverNumber}>
           {driverList.map(([number, name]) => {
-          return (
-            <StyledOption key={number} value={`${number}`}>
-              {number} - {name}
-            </StyledOption>
-          );
-        })}
-</StyledSelect>
+            return (
+              <StyledOption key={number} value={`${number}`}>
+                {number} - {name}
+              </StyledOption>
+            );
+          })}
+        </StyledSelect>
+
       </div>
       {/* Time */}
       <div>
         <StyledLabel htmlFor="time">Time:</StyledLabel>
-        <StyledInput id="time" type="text" value={lastTime} />
+        <StyledInput id="time" type="text" value={lastTime} onChange={handleChange} />
       </div>
       {/* Buttons */}
       <div>
@@ -203,6 +204,6 @@ export function TimingController(props) {
         <StyledButton onClick={handleStopTimer} disabled={status !== 'Running'}>Stop Timer</StyledButton>
         <StyledButton onClick={handleRefresh}>Refresh</StyledButton>
       </div>
-    </StyledControlPanel>
+    </StyledControl>
   );
 }
