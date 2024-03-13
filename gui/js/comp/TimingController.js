@@ -159,6 +159,7 @@ export function TimingController(props) {
   };
 
   const handleRefresh = async () => {
+    props.onUpdateData(true);
     fetchStatus();
     fetchDriverList();
     fetchLastTime();

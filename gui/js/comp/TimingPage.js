@@ -179,7 +179,7 @@ export function TimingPage(props) {
     const [updateDataFlag, setUpdateDataFlag] = useState(false);
 
     //timing sheet stuff
-    const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+    //const [isLoading, setIsLoading] = useState(false); // State for loading indicator
     const [error, setError] = useState(null); // State to handle errors
 
     //add driver form
