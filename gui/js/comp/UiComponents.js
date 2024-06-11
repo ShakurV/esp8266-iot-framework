@@ -82,7 +82,7 @@ export const Header = styled(HeaderSrc)`
     div:first-child {
         margin:0px auto;
         padding:0em 1em;
-        max-width:1024px;
+        max-width:1240px;
         
         display:flex;
         flex-wrap: wrap;

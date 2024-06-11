@@ -169,12 +169,18 @@ if (Config.find(entry => entry.name === "language")) {
     loc = require("../lang/en.json");
 }
 
-export function TimingPage(props) {
+export function Leaderboard(props) {
 
     const [counter, setCounter] = useState(0);
     const [socketStatus, setSocketStatus] = useState(0);
 
     const [updateDataFlag, setUpdateDataFlag] = useState(false);
+
+    //flags to update table data
+    const handleUpdateData = (state) => {
+      // Update data logic (optional)
+      setUpdateDataFlag(state);
+    };
 
     useEffect(() => {
         document.title = loc.titleTiming;
@@ -192,14 +198,7 @@ export function TimingPage(props) {
         return () => clearTimeout(timer);
 
     }, [counter]);
-
-    //flags to update table data
-    const handleUpdateData = (state) => {
-      // Update data logic (optional)
-      setUpdateDataFlag(state);
-    };
-
-    // ... rest of your component (e.g., socket status, form)
+  
   
     return (
       <>
@@ -207,9 +206,10 @@ export function TimingPage(props) {
             
           {/* Timing sheet */}
             <TableWrapper>
-
-              <h2>
-              {loc.titleTiming} {socketStatus != 0 ? (
+              
+                <h2>
+                Leaderboard
+                {socketStatus != 0 ? (
                 socketStatus === 1 ? (
                   <Live>{loc.dashLive}</Live>
                 ) : (
@@ -218,13 +218,12 @@ export function TimingPage(props) {
               ) : (
                 <Connecting>{loc.dashConn}</Connecting>
               )}
-              </h2>          
-                <JSONTable 
-                  APIFetchCall={`${props.API}/api/event/getTimeSheet`}
-                  updateFlag={updateDataFlag}
-                  onUpdateData={handleUpdateData}
-                />
-              
+                </h2>            
+                  <JSONTable 
+                    APIFetchCall={`${props.API}/api/event/getWinnerSheet`}
+                    updateFlag={updateDataFlag}
+                    onUpdateData={handleUpdateData}
+                  />
               </TableWrapper>           
           {/* Rest of your form or other elements */}
         </StyledContainer>
@@ -233,7 +232,7 @@ export function TimingPage(props) {
     );
 }
 
-TimingPage.propTypes = {    
+Leaderboard.propTypes = {    
     requestData: PropTypes.func,
     API: PropTypes.string,
     socket: PropTypes.object,

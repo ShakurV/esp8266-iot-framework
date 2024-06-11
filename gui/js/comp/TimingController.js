@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {StyledControl, StyledForm, StyledLabel, StyledSelect, StyledInput, StyledButton, StyledSpan, StyledOption} from "./TimingPage";
+import {StyledControl, StyledForm, StyledLabel, StyledSelect, StyledInput, StyledButton, StyledSpan, StyledOption, StyledControlPanel, StyledContainer} from "./TimingPage";
 
 export function TimingController(props) {
   const [data, setData] = useState([]); // State to store API response
@@ -174,37 +174,42 @@ export function TimingController(props) {
   return (
     <StyledControl>
       <h3>Controller</h3>
-      {/* Status */}
-      <div>
+      
+      <StyledContainer>
+        <StyledControlPanel>
+          {/* Status */}
+        <div>
         <StyledLabel htmlFor="status">Status:</StyledLabel>
         <span id="status">{status}</span>
-      </div>
-      {/* Driver */}
-      <div>
-        <StyledLabel htmlFor="driver">Driver:</StyledLabel>
-        <StyledSelect id="driver" onChange={handleDriverChange} value={driverNumber}>
-          {driverList.map(([number, name]) => {
-            return (
-              <StyledOption key={number} value={`${number}`}>
-                {number} - {name}
-              </StyledOption>
-            );
-          })}
-        </StyledSelect>
-
-      </div>
-      {/* Time */}
-      <div>
-        <StyledLabel htmlFor="time">Time:</StyledLabel>
-        <StyledInput id="time" type="text" value={lastTime} onChange={handleChange} />
-      </div>
-      {/* Buttons */}
-      <div>
-        <StyledButton onClick={handleStartTimer} disabled={status !== 'Standby'}>Start Timer</StyledButton>
-        <StyledButton onClick={handleRecordTime} disabled={status !== 'Standby'}>Record Time</StyledButton>
-        <StyledButton onClick={handleStopTimer} disabled={status !== 'Running'}>Stop Timer</StyledButton>
-        <StyledButton onClick={handleRefresh}>Refresh</StyledButton>
-      </div>
+        </div>
+          {/* Driver */}
+          <div>
+            <StyledLabel htmlFor="driver">Driver:</StyledLabel>
+            <StyledSelect id="driver" onChange={handleDriverChange} value={driverNumber}>
+              {driverList.map(([number, name]) => {
+                return (
+                  <StyledOption key={number} value={`${number}`}>
+                    {number} - {name}
+                  </StyledOption>
+                );
+              })}
+            </StyledSelect>
+            
+          </div>
+          {/* Time */}
+          <div>
+            <StyledLabel htmlFor="time">Time:</StyledLabel>
+            <StyledInput id="time" type="text" value={lastTime} onChange={handleChange} />
+          </div>
+        </StyledControlPanel>
+        {/* Buttons */}
+        <StyledControlPanel>
+          <StyledButton onClick={handleStartTimer} disabled={status !== 'Standby'}>Start Timer</StyledButton>
+          <StyledButton onClick={handleRecordTime} disabled={status !== 'Standby'}>Record Time</StyledButton>
+          <StyledButton onClick={handleStopTimer} disabled={status !== 'Running'}>Stop Timer</StyledButton>
+          <StyledButton onClick={handleRefresh}>Refresh</StyledButton>
+        </StyledControlPanel>
+      </StyledContainer>
     </StyledControl>
   );
 }

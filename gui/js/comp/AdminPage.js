@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { JSONTable } from "./JSONTable";
 
 import styled from "styled-components";
 
@@ -9,43 +8,6 @@ const baseSpacing = '10px';
 const baseBorderRadius = '5px';
 const baseBorderColor = '#ddd';
 const baseControlWidth = '200px';
-
-const Live = styled.span`
-    color:#c4e052 !important;
-    border: 1px solid #c4e052;
-    background-color:#e6f9b8;     
-    border-radius:3px;
-    font-size:0.5em !important;  
-    padding:0.2em; 
-    vertical-align:0.3em;
-`;
-
-const Connecting = styled.span`
-    color:#ddd !important;
-    border: 1px solid #ddd;
-    background-color:#f4f4f4;
-    border-radius:3px;
-    font-size:0.5em !important;
-    padding:0.2em;
-    vertical-align:0.3em;
-`;
-
-const Disconnected = styled.span`
-    color:#ff3333 !important;
-    border: 1px solid #ff3333;
-    background-color:#ffb3b3;
-    border-radius:3px;
-    font-size:0.5em !important;
-    padding:0.2em;
-    vertical-align:0.3em;
-`;
-
-const TableWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  flex: 3;
-`;
 
 const StyledForm = styled.form`
   display: flex;
@@ -162,6 +124,7 @@ export {
 };
 
 import Config from "../configuration.json";
+import { TimingController } from "./TimingController";
 let loc;
 if (Config.find(entry => entry.name === "language")) {
     loc = require("./../lang/" + Config.find(entry => entry.name === "language").value + ".json");
@@ -169,12 +132,23 @@ if (Config.find(entry => entry.name === "language")) {
     loc = require("../lang/en.json");
 }
 
-export function TimingPage(props) {
+export function AdminPage(props) {
 
     const [counter, setCounter] = useState(0);
     const [socketStatus, setSocketStatus] = useState(0);
 
     const [updateDataFlag, setUpdateDataFlag] = useState(false);
+
+    //timing sheet stuff
+    //const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+    const [error, setError] = useState(null); // State to handle errors
+
+    //add driver form
+    const [driverNumber, setDriverNumber] = useState("");
+    const [driver, setDriver] = useState("");
+    const [navigator, setNavigator] = useState("");
+    const [raceClass, setRaceClass] = useState("");
+    const [vehicle, setVehicle] = useState("");
 
     useEffect(() => {
         document.title = loc.titleTiming;
@@ -192,7 +166,35 @@ export function TimingPage(props) {
         return () => clearTimeout(timer);
 
     }, [counter]);
-
+  
+  // Function to handle form submission
+  // Function to handle form submission using query parameters
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+    
+      try {
+        const response = await fetch(`${props.API}/api/event/addDriver?driverNumber=${driverNumber}&driver=${driver}&navigator=${navigator}&raceClass=${raceClass}&vehicle=${vehicle}`, {
+          method: "POST",
+        });
+      
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+      
+        // Clear form fields after successful submission
+        setDriverNumber("");
+        setDriver("");
+        setNavigator("");
+        setRaceClass("");
+        setVehicle("");
+      
+        location.reload();
+      } catch (err) {
+        console.error("Error adding driver:", err);
+        setError(err.message);
+      }
+    };
+    
     //flags to update table data
     const handleUpdateData = (state) => {
       // Update data logic (optional)
@@ -204,28 +206,54 @@ export function TimingPage(props) {
     return (
       <>
         <StyledContainer>
-            
-          {/* Timing sheet */}
-            <TableWrapper>
-
-              <h2>
-              {loc.titleTiming} {socketStatus != 0 ? (
-                socketStatus === 1 ? (
-                  <Live>{loc.dashLive}</Live>
-                ) : (
-                  <Disconnected>{loc.dashDisconn}</Disconnected>
-                )
-              ) : (
-                <Connecting>{loc.dashConn}</Connecting>
-              )}
-              </h2>          
-                <JSONTable 
-                  APIFetchCall={`${props.API}/api/event/getTimeSheet`}
-                  updateFlag={updateDataFlag}
-                  onUpdateData={handleUpdateData}
-                />
-              
-              </TableWrapper>           
+          <StyledControlPanel>
+            <TimingController API={props.API} 
+                                socket={props.socket}
+                                onUpdateData={handleUpdateData}
+                                />
+            </StyledControlPanel>
+            <StyledControlPanel>
+            {/* Form for adding new driver */}
+            <StyledForm onSubmit={handleSubmit}>
+            <h3>Add Entry Form</h3>
+            <StyledLabel htmlFor="driverNumber">Driver Number:</StyledLabel>
+            <StyledInput 
+              type="number"
+              id="driverNumber"
+              value={driverNumber}
+              onChange={(e) => setDriverNumber(e.target.value)}
+            />
+            <StyledLabel htmlFor="driver">Driver Name:</StyledLabel>
+            <StyledInput 
+              type="text"
+              id="driver"
+              value={driver}
+              onChange={(e) => setDriver(e.target.value)}
+            />
+            <StyledLabel htmlFor="navigator">Navigator Name:</StyledLabel>
+            <StyledInput 
+              type="text"
+              id="navigator"
+              value={navigator}
+              onChange={(e) => setNavigator(e.target.value)}
+            />
+            <StyledLabel htmlFor="raceClass">Race Class:</StyledLabel>
+            <StyledInput 
+              type="text"
+              id="raceClass"
+              value={raceClass}
+              onChange={(e) => setRaceClass(e.target.value)}
+            />
+            <StyledLabel htmlFor="vehicle">Vehicle:</StyledLabel>
+            <StyledInput 
+              type="text"
+              id="vehicle"
+              value={vehicle}
+              onChange={(e) => setVehicle(e.target.value)}
+            />
+            <StyledButton  type="submit">Add Entry</StyledButton >
+            </StyledForm>
+          </StyledControlPanel>
           {/* Rest of your form or other elements */}
         </StyledContainer>
         </>
@@ -233,7 +261,7 @@ export function TimingPage(props) {
     );
 }
 
-TimingPage.propTypes = {    
+AdminPage.propTypes = {    
     requestData: PropTypes.func,
     API: PropTypes.string,
     socket: PropTypes.object,
