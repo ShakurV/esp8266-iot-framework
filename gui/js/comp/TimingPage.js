@@ -147,6 +147,21 @@ const StyledContainer = styled.div`
   display: flex;
 `;
 
+const TableRow = styled.tr`
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  &:nth-child(even) {
+    background-color: #f0f0f0;
+  }
+`;
+
+const TableData = styled.td`
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+`;
+
 
 export {
   StyledControlPanel,
@@ -161,20 +176,17 @@ export {
   StyledContainer
 };
 
-import Config from "../configuration.json";
-let loc;
-if (Config.find(entry => entry.name === "language")) {
-    loc = require("./../lang/" + Config.find(entry => entry.name === "language").value + ".json");
-} else {
-    loc = require("../lang/en.json");
-}
+let loc = require("../lang/en.json");
 
 export function TimingPage(props) {
 
     const [counter, setCounter] = useState(0);
     const [socketStatus, setSocketStatus] = useState(0);
+    const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+    const [error, setError] = useState(null); // State to handle errors
 
-    const [updateDataFlag, setUpdateDataFlag] = useState(false);
+
+    // const [updateDataFlag, setUpdateDataFlag] = useState(false);
 
     useEffect(() => {
         document.title = loc.titleTiming;
@@ -193,13 +205,131 @@ export function TimingPage(props) {
 
     }, [counter]);
 
-    //flags to update table data
-    const handleUpdateData = (state) => {
-      // Update data logic (optional)
-      setUpdateDataFlag(state);
-    };
+    const [data, setData] = useState([]); // State to store API response
+    
+     // Function to fetch data from the API
+   const fetchData = async (url) => {
+    setIsLoading(true);
+    setError(null);
 
-    // ... rest of your component (e.g., socket status, form)
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+    const fetchAllPaginateData = async (
+      startIndex = 0,
+      maxDataRows = 0,
+      includeHeader = 1,
+      bigData = []
+   ) => 
+      {
+      try {
+          setIsLoading(true);
+          console.log("joe mama");
+          
+          const fetchTableURL = `${props.API}/api/event/getTimeSheet?startIndex=${startIndex}&maxDataRows=${maxDataRows}&includeHeader=${includeHeader}`;
+          const fetchDriverListURL = `${props.API}/api/event/getDriverNumberList`;
+          
+
+          const driverList = await fetchData(fetchDriverListURL);
+          console.log(driverList);
+          
+          var key, count = 0;
+          for(key in Object.keys(driverList)) {
+            //if(response.hasOwnProperty(key)) {
+              ++count;
+            //}
+          }
+
+          console.log("List lenght: " + count);
+          
+
+          // console.debug("Fetch list URL: " + fetchDriverListURL);
+          
+          // // const res = fetch(fetchDriverListURL).then
+          // let numberOfEntries = 0;// = (Object.entries(res)).length
+          
+          // await fetch(fetchDriverListURL).then((response) => {
+          //   if (!response.ok) {
+          //     throw new Error(`API request failed with status ${response.status}`);
+          //   }
+
+          //   console.log(response)
+          //   // const entries = response.json();
+          //   // console.log(length(entries))
+          //   // numberOfEntries = entries.length;
+
+          //   var key, count = 0;
+          //   for(key in Object.entries(await response.json())) {
+          //     //if(response.hasOwnProperty(key)) {
+          //       ++key;
+          //     //}
+          //   }
+
+          //   console.debug("Number of entries to fetch: " + count);
+          //   console.debug("Fetch list URL: " + fetchTableURL);
+          // });
+
+          // console.debug("Number of entries to fetch: " + numberOfEntries);
+          // console.debug("Fetch list URL: " + fetchTableURL);
+          
+          // const response = (await fetch(fetchTableURL)).json();
+          // //const { totalPages } = data; // Your api should give you a total page count, result or something to setup your iteration
+  
+          // bigData.push(response); // push on big data response data
+          // setData(bigData);
+  
+          // // if current page isn't the last, call the fetch feature again, with page + 1
+          // if (
+          //     bigData.length < numberOfEntries
+          // ) {
+          //     if(bigData.length = 1){
+          //       startIndex = 1;
+          //       maxDataRows = 10;
+          //       includeHeader = 0;
+          //     }else{
+          //       startIndex += maxDataRows;
+          //     }
+          //     await new Promise((resolve) => setTimeout(resolve, 200)); // setup a sleep depend your api request/second requirement.
+          //     console.debug((bigData.length -1) , '/', numberOfEntries);
+          //     return await fetchAllPaginateData(startIndex,maxDataRows,includeHeader,bigData);
+          // }
+  
+          // console.clear();
+          // return console.info('Data complete.');
+          // );
+      } catch (err) {
+          console.error(err);
+      }
+  }
+
+  useEffect(() => {
+    fetchAllPaginateData();
+  }, []);
+
+
+  // Function to render table body rows
+  const renderTableBody = () => {
+    return data.map((row, index) => (
+      <TableRow key={index}>
+          {row.map((cell) => (
+            <TableData>{cell}</TableData>
+          ))}
+      </TableRow>
+    ));
+  };
   
     return (
       <>
@@ -219,11 +349,16 @@ export function TimingPage(props) {
                 <Connecting>{loc.dashConn}</Connecting>
               )}
               </h2>          
-                <JSONTable 
-                  APIFetchCall={`${props.API}/api/event/getTimeSheet`}
-                  updateFlag={updateDataFlag}
-                  onUpdateData={handleUpdateData}
-                />
+              <>
+                {/* sheet */}
+                {data.length > 0 && (
+                  <>
+                    {isLoading && <p>Loading data...</p>}
+                    {error && <p>Error: {error}</p>}
+                    <table>{renderTableBody()}</table>
+                  </>
+                )}
+              </>
               
               </TableWrapper>           
           {/* Rest of your form or other elements */}

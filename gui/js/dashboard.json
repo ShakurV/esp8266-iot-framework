@@ -1,3 +1,26 @@
 [
-
+    {
+        "name": "Last_Time",
+        "type": "char",
+        "length": 15,
+        "direction": "display"
+    },
+    {
+        "name": "IP_Host",
+        "type": "char",
+        "length": 15,
+        "direction": "display"
+    },
+    {
+        "name": "IP_Lights",
+        "type": "char",
+        "length": 15,
+        "direction": "display"
+    },
+    {
+        "name": "IP_Gate",
+        "type": "char",
+        "length": 15,
+        "direction": "display"
+    }
 ]
