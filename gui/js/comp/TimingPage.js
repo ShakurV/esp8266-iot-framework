@@ -229,20 +229,21 @@ export function TimingPage(props) {
 
 
     const fetchAllPaginateData = async (
-      startIndex = 0,
-      maxDataRows = 0,
-      includeHeader = 1,
-      bigData = []
+      
    ) => 
       {
       try {
           setIsLoading(true);
           console.log("joe mama");
+
+          let startIndex = 0;
+          let maxDataRows = 0;
+          let includeHeader = 1;
+          let bigData = [];
           
           const fetchTableURL = `${props.API}/api/event/getTimeSheet?startIndex=${startIndex}&maxDataRows=${maxDataRows}&includeHeader=${includeHeader}`;
           const fetchDriverListURL = `${props.API}/api/event/getDriverNumberList`;
           
-
           const driverList = await fetchData(fetchDriverListURL);
           console.log(driverList);
           
@@ -255,61 +256,24 @@ export function TimingPage(props) {
 
           console.log("List lenght: " + count);
           
+          console.debug("Fetch list URL: " + fetchDriverListURL);
 
-          // console.debug("Fetch list URL: " + fetchDriverListURL);
+          bigData = await fetchData(fetchTableURL);
+
+          maxDataRows = 10;
+          includeHeader = 0;
           
-          // // const res = fetch(fetchDriverListURL).then
-          // let numberOfEntries = 0;// = (Object.entries(res)).length
+          while(startIndex < count){
+            const fetchTableURL = `${props.API}/api/event/getTimeSheet?startIndex=${startIndex}&maxDataRows=${maxDataRows}&includeHeader=${includeHeader}`;
+            bigData = bigData.concat(await fetchData(fetchTableURL));
+            startIndex += maxDataRows;
+            console.debug(bigData);
+          }
           
-          // await fetch(fetchDriverListURL).then((response) => {
-          //   if (!response.ok) {
-          //     throw new Error(`API request failed with status ${response.status}`);
-          //   }
-
-          //   console.log(response)
-          //   // const entries = response.json();
-          //   // console.log(length(entries))
-          //   // numberOfEntries = entries.length;
-
-          //   var key, count = 0;
-          //   for(key in Object.entries(await response.json())) {
-          //     //if(response.hasOwnProperty(key)) {
-          //       ++key;
-          //     //}
-          //   }
-
-          //   console.debug("Number of entries to fetch: " + count);
-          //   console.debug("Fetch list URL: " + fetchTableURL);
-          // });
-
-          // console.debug("Number of entries to fetch: " + numberOfEntries);
-          // console.debug("Fetch list URL: " + fetchTableURL);
+          setData(bigData);
+          console.log("fuck you");
+          console.log(data);
           
-          // const response = (await fetch(fetchTableURL)).json();
-          // //const { totalPages } = data; // Your api should give you a total page count, result or something to setup your iteration
-  
-          // bigData.push(response); // push on big data response data
-          // setData(bigData);
-  
-          // // if current page isn't the last, call the fetch feature again, with page + 1
-          // if (
-          //     bigData.length < numberOfEntries
-          // ) {
-          //     if(bigData.length = 1){
-          //       startIndex = 1;
-          //       maxDataRows = 10;
-          //       includeHeader = 0;
-          //     }else{
-          //       startIndex += maxDataRows;
-          //     }
-          //     await new Promise((resolve) => setTimeout(resolve, 200)); // setup a sleep depend your api request/second requirement.
-          //     console.debug((bigData.length -1) , '/', numberOfEntries);
-          //     return await fetchAllPaginateData(startIndex,maxDataRows,includeHeader,bigData);
-          // }
-  
-          // console.clear();
-          // return console.info('Data complete.');
-          // );
       } catch (err) {
           console.error(err);
       }
