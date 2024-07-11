@@ -1,23 +1,26 @@
 [
     {
-        "name": "GPIO_D5",
-        "type": "bool",
-        "direction": "display"
-    },
-    {
-        "name": "GPIO_D6",
-        "type": "bool",
-        "direction": "display"
-    },
-    {
-        "name": "GPIO_D7",
-        "type": "bool",
-        "direction": "display"
-    }
-    {
-        "name": "IP",
+        "name": "Last_Time",
         "type": "char",
-        "length": 32,
+        "length": 15,
+        "direction": "display"
+    },
+    {
+        "name": "IP_Host",
+        "type": "char",
+        "length": 15,
+        "direction": "display"
+    },
+    {
+        "name": "IP_Lights",
+        "type": "char",
+        "length": 15,
+        "direction": "display"
+    },
+    {
+        "name": "IP_Gate",
+        "type": "char",
+        "length": 15,
         "direction": "display"
     }
 ]

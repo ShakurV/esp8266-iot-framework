@@ -4,13 +4,24 @@
         "label": "Project Name",
         "type": "char",
         "length": 32,
-        "value": "ESP8266 IoT Framework"
+        "value": "AppliedAutomation"
     },
     {
-        "name": "language",        
-        "type": "char",
-        "length": 3,
-        "value": "en",
-        "hidden": true
+        "name": "isHost",
+        "label": "Host",
+        "type": "bool",
+        "value": "false"
+    },
+    {
+        "name": "isGate",
+        "label": "Gate",
+        "type": "bool",
+        "value": "true"
+    },
+    {
+        "name": "isLights",
+        "label": "Lights",
+        "type": "bool",
+        "value": "false"
     }
 ]

@@ -9,6 +9,11 @@ import { ConfigPage } from "./comp/ConfigPage";
 import { DashboardPage } from "./comp/DashboardPage";
 import { FilePage } from "./comp/FilePage";
 import { FirmwarePage } from "./comp/FirmwarePage";
+import { TimingPage } from "./comp/TimingPage";
+import { AdminPage } from "./comp/AdminPage";
+import { Leaderboard } from "./comp/Leaderboard";
+
+
 
 import { bin2obj } from "./functions/configHelpers";
 
@@ -23,7 +28,7 @@ if (Config.find(entry => entry.name === "language")) {
     loc = require("./lang/en.json");
 }
 
-let url = "http://192.168.1.54";
+let url = "http://192.168.4.177";
 if (process.env.NODE_ENV === "production") {url = window.location.origin;}
 
 if (process.env.NODE_ENV === "development") {require("preact/debug");}
@@ -81,6 +86,9 @@ function Root() {
 
                 <Hamburger onClick={() => setMenu(!menu)} />
                 <Menu className={menu ? "" : "menuHidden"}>
+                    <li><NavLink onClick={() => setMenu(false)} exact to="/admin">{loc.titleAdmin}</NavLink></li>
+                    <li><NavLink onClick={() => setMenu(false)} exact to="/timing">{loc.titleTiming}</NavLink></li>
+                    <li><NavLink onClick={() => setMenu(false)} exact to="/leaderboard">{loc.titleLeaderboard}</NavLink></li>
                     <li><NavLink onClick={() => setMenu(false)} exact to="/">{loc.titleWifi}</NavLink></li>
                     <li><NavLink onClick={() => setMenu(false)} exact to="/dashboard">{loc.titleDash}</NavLink></li>
                     <li><NavLink onClick={() => setMenu(false)} exact to="/config">{loc.titleConf}</NavLink></li>
@@ -105,6 +113,24 @@ function Root() {
                         <DashboardPage API={url} 
                             socket={socket}
                             requestData={() => {return displayData;}} />
+                    </Route>
+                    <Route exact path="/timing">
+                        <TimingPage API={url} 
+                            socket={socket}
+                            requestData={() => {return displayData;}}
+                            />
+                    </Route>
+                    <Route exact path="/admin">
+                        <AdminPage API={url} 
+                            socket={socket}
+                            requestData={() => {return displayData;}}
+                            />
+                    </Route>
+                    <Route exact path="/leaderboard">
+                        <Leaderboard API={url} 
+                            socket={socket}
+                            requestData={() => {return displayData;}}
+                            />
                     </Route>
                     <Route exact path="/firmware">
                         <FirmwarePage API={url} />
