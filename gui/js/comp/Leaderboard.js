@@ -10,6 +10,21 @@ const baseBorderRadius = '5px';
 const baseBorderColor = '#ddd';
 const baseControlWidth = '200px';
 
+
+const TableRow = styled.tr`
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  &:nth-child(even) {
+    background-color: #f0f0f0;
+  }
+`;
+
+const TableData = styled.td`
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+`;
 const Live = styled.span`
     color:#c4e052 !important;
     border: 1px solid #c4e052;
@@ -171,33 +186,122 @@ if (Config.find(entry => entry.name === "language")) {
 
 export function Leaderboard(props) {
 
-    const [counter, setCounter] = useState(0);
-    const [socketStatus, setSocketStatus] = useState(0);
+  const [counter, setCounter] = useState(0);
+  const [socketStatus, setSocketStatus] = useState(0);
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const [error, setError] = useState(null); // State to handle errors
 
-    const [updateDataFlag, setUpdateDataFlag] = useState(false);
 
-    //flags to update table data
-    const handleUpdateData = (state) => {
-      // Update data logic (optional)
-      setUpdateDataFlag(state);
-    };
+  // const [updateDataFlag, setUpdateDataFlag] = useState(false);
 
-    useEffect(() => {
-        document.title = loc.titleTiming;
-    }, []);
+  useEffect(() => {
+      document.title = loc.titleTiming;
+  }, []);
 
-    // Fucntion to update connection status
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setCounter(counter => counter + 1);
-            if (!(socketStatus == 0 && props.socket.readyState != 1)) {
-                setSocketStatus(props.socket.readyState);
-            }
-        }, 40); //refresh with 25FPS
+  // Fucntion to update connection status
+  useEffect(() => {
+      const timer = setTimeout(() => {
+          setCounter(counter => counter + 1);
+          if (!(socketStatus == 0 && props.socket.readyState != 1)) {
+              setSocketStatus(props.socket.readyState);
+          }
+      }, 40); //refresh with 25FPS
 
-        return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
 
-    }, [counter]);
+  }, [counter]);
+
+  const [data, setData] = useState([]); // State to store API response
+  
+   // Function to fetch data from the API
+ const fetchData = async (url) => {
+  setIsLoading(true);
+  setError(null);
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    setError(err.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+  const fetchAllPaginateData = async (
+    
+ ) => 
+    {
+    try {
+        setIsLoading(true);
+        console.log("joe mama");
+
+        let startIndex = 0;
+        let maxDataRows = 0;
+        let includeHeader = 1;
+        let bigData = [];
+        
+        const fetchTableURL = `${props.API}/api/event/getWinnerSheet?startIndex=${startIndex}&maxDataRows=${maxDataRows}&includeHeader=${includeHeader}`;
+        const fetchDriverListURL = `${props.API}/api/event/getDriverNumberList`;
+        
+        const driverList = await fetchData(fetchDriverListURL);
+        console.log(driverList);
+        
+        var key, count = 0;
+        for(key in Object.keys(driverList)) {
+          //if(response.hasOwnProperty(key)) {
+            ++count;
+          //}
+        }
+
+        console.log("List lenght: " + count);
+        
+        console.debug("Fetch list URL: " + fetchDriverListURL);
+
+        bigData = await fetchData(fetchTableURL);
+
+        maxDataRows = 1;
+        includeHeader = 0;
+        
+        while(startIndex < count){
+          const fetchTableURL = `${props.API}/api/event/getWinnerSheet?startIndex=${startIndex}&maxDataRows=${maxDataRows}&includeHeader=${includeHeader}`;
+          bigData = bigData.concat(await fetchData(fetchTableURL));
+          startIndex += maxDataRows;
+          console.debug(bigData);
+        }
+        
+        setData(bigData);
+        console.log("fuck you");
+        console.log(data);
+        
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+useEffect(() => {
+  fetchAllPaginateData();
+}, []);
+
+
+// Function to render table body rows
+const renderTableBody = () => {
+  return data.map((row, index) => (
+    (row) ? 
+    <TableRow key={index}>
+        {row.map((cell) => (
+          <TableData>{cell}</TableData>
+        ))}
+    </TableRow> : null
+  ));
+};
+
   
   
     return (
@@ -218,13 +322,19 @@ export function Leaderboard(props) {
               ) : (
                 <Connecting>{loc.dashConn}</Connecting>
               )}
-                </h2>            
-                  <JSONTable 
-                    APIFetchCall={`${props.API}/api/event/getWinnerSheet`}
-                    updateFlag={updateDataFlag}
-                    onUpdateData={handleUpdateData}
-                  />
-              </TableWrapper>           
+                </h2>          
+              <>
+                {/* sheet */}
+                {data.length > 0 && (
+                  <>
+                    {isLoading && <p>Loading data...</p>}
+                    {error && <p>Error: {error}</p>}
+                    <table>{renderTableBody()}</table>
+                  </>
+                )}
+              </>
+              
+              </TableWrapper>          
           {/* Rest of your form or other elements */}
         </StyledContainer>
         </>
