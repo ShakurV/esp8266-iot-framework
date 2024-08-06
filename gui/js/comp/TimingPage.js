@@ -260,7 +260,7 @@ export function TimingPage(props) {
 
           bigData = await fetchData(fetchTableURL);
 
-          maxDataRows = 10;
+          maxDataRows = 20;
           includeHeader = 0;
           
           while(startIndex < count){
@@ -271,7 +271,7 @@ export function TimingPage(props) {
           }
           
           setData(bigData);
-          console.log("fuck you");
+          //console.log("fuck you");
           console.log(data);
           
       } catch (err) {

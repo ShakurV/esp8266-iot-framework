@@ -173,7 +173,7 @@ export function AdminPage(props) {
       event.preventDefault();
     
       try {
-        const response = await fetch(`${props.API}/api/event/addDriver?driverNumber=${driverNumber}&driver=${driver}&navigator=${navigator}&raceClass=${raceClass}&vehicle=${vehicle}`, {
+        const response = await fetch(`${props.DSAPI}/api/event/addDriver?driverNumber=${driverNumber}&driver=${driver}&navigator=${navigator}&raceClass=${raceClass}&vehicle=${vehicle}`, {
           method: "POST",
         });
       
@@ -207,7 +207,7 @@ export function AdminPage(props) {
       <>
         <StyledContainer>
           <StyledControlPanel>
-            <TimingController API={props.API} 
+            <TimingController API={props.API} DSAPI = {props.DSAPI}
                                 socket={props.socket}
                                 onUpdateData={handleUpdateData}
                                 />

@@ -20,7 +20,6 @@ import { bin2obj } from "./functions/configHelpers";
 import Config from "./configuration.json";
 import Dash from "./dashboard.json";
 
-
 let loc;
 if (Config.find(entry => entry.name === "language")) {
     loc = require("./lang/" + Config.find(entry => entry.name === "language").value + ".json");
@@ -29,6 +28,7 @@ if (Config.find(entry => entry.name === "language")) {
 }
 
 let url = "http://192.168.4.177";
+let dataServerUrl = "http://192.168.4.115";
 if (process.env.NODE_ENV === "production") {url = window.location.origin;}
 
 if (process.env.NODE_ENV === "development") {require("preact/debug");}
@@ -115,19 +115,19 @@ function Root() {
                             requestData={() => {return displayData;}} />
                     </Route>
                     <Route exact path="/timing">
-                        <TimingPage API={url} 
+                        <TimingPage API={dataServerUrl} 
                             socket={socket}
                             requestData={() => {return displayData;}}
                             />
                     </Route>
                     <Route exact path="/admin">
-                        <AdminPage API={url} 
+                        <AdminPage API={url} DSAPI = {dataServerUrl} 
                             socket={socket}
                             requestData={() => {return displayData;}}
                             />
                     </Route>
                     <Route exact path="/leaderboard">
-                        <Leaderboard API={url} 
+                        <Leaderboard API={dataServerUrl} 
                             socket={socket}
                             requestData={() => {return displayData;}}
                             />

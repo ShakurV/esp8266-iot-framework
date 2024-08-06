@@ -38,7 +38,7 @@ export function TimingController(props) {
   };
 
   const fetchDriverList = async () => {
-    const data = await fetchData(`${props.API}/api/event/getDriverNumberList`);
+    const data = await fetchData(`${props.DSAPI}/api/event/getDriverNumberList`);
     setDriverList(Object.entries(data)); // Convert object to key-value pairs array
   };
 

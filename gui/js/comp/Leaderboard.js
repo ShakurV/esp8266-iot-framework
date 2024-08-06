@@ -15,9 +15,6 @@ const TableRow = styled.tr`
   padding: 10px;
   border: 1px solid #ddd;
   background-color: #fff;
-  &:nth-child(even) {
-    background-color: #f0f0f0;
-  }
 `;
 
 const TableData = styled.td`
@@ -266,7 +263,7 @@ export function Leaderboard(props) {
 
         bigData = await fetchData(fetchTableURL);
 
-        maxDataRows = 1;
+        maxDataRows = 10;
         includeHeader = 0;
         
         while(startIndex < count){
@@ -277,7 +274,7 @@ export function Leaderboard(props) {
         }
         
         setData(bigData);
-        console.log("fuck you");
+        //console.log("fuck you");
         console.log(data);
         
     } catch (err) {
@@ -293,13 +290,30 @@ useEffect(() => {
 // Function to render table body rows
 const renderTableBody = () => {
   return data.map((row, index) => (
-    (row) ? 
-    <TableRow key={index}>
+    row ? (
+      <TableRow key={index} style={getRowStyle(index)}>
         {row.map((cell) => (
           <TableData>{cell}</TableData>
         ))}
-    </TableRow> : null
+      </TableRow>
+    ) : null
   ));
+};
+
+const getRowStyle = (rowIndex) => {
+  const styles = {
+    backgroundColor: 'white', // Default style
+  };
+
+  if (rowIndex === 1) {
+    styles.backgroundColor = 'gold';
+  } else if (rowIndex === 2) {
+    styles.backgroundColor = 'silver';
+  } else if (rowIndex === 3) {
+    styles.backgroundColor = '#CD7F32';
+  }
+
+  return styles;
 };
 
   
