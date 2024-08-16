@@ -243,6 +243,9 @@ export function TimingPage(props) {
           
           const fetchTableURL = `${props.API}/api/event/getTimeSheet?startIndex=${startIndex}&maxDataRows=${maxDataRows}&includeHeader=${includeHeader}`;
           const fetchDriverListURL = `${props.API}/api/event/getDriverNumberList`;
+
+          console.log(fetchTableURL);
+          console.log(fetchDriverListURL);
           
           const driverList = await fetchData(fetchDriverListURL);
           console.log(driverList);

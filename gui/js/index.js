@@ -30,15 +30,6 @@ if (Config.find(entry => entry.name === "language")) {
 }
 
 let url = "http://192.168.4.1";
-if (Config.find(entry => entry.name === "hostIP")) {
-    url = Config.find(entry => entry.name === "hostIP").value
-}
-
-let dataServerUrl = "http://192.168.4.115";
-if (Config.find(entry => entry.name === "dataIP")) {
-    dataServerUrl = Config.find(entry => entry.name === "dataIP").value
-}
-
 
 if (process.env.NODE_ENV === "production") {url = window.location.origin;}
 
@@ -87,7 +78,18 @@ function Root() {
     if (typeof projectVersion === "undefined") {
         projectVersion = Config.find(entry => entry.name === "projectVersion") ? Config.find(entry => entry.name === "projectVersion").value : "";
     }
-    
+    // url = configData["hostIP"];
+    // if (typeof projectVersion === "undefined") {
+    //     projectVersion = Config.find(entry => entry.name === "dataIP") ? Config.find(entry => entry.name === "dataIP").value : "";
+    // }
+
+    let dataServerUrl = `http://${configData["dataIP"]}`;
+    if (typeof dataServerUrl === "undefined") {
+        dataServerUrl = `http://${Config.find(entry => entry.name === "dataIP") ? Config.find(entry => entry.name === "dataIP").value : "192.168.4.115"}`;
+    }
+
+
+
     return <><GlobalStyle />
 
         <BrowserRouter>

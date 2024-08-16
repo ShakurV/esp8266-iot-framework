@@ -7,21 +7,31 @@
         "value": "AppliedAutomation"
     },
     {
-        "name": "isHost",
-        "label": "Host",
-        "type": "bool",
-        "value": "false"
+        "name": "hostIP",
+        "label": "Host IP Address",
+        "type": "char",
+        "length": 15,
+        "value": "192.168.4.177"
     },
     {
-        "name": "isGate",
-        "label": "Gate",
-        "type": "bool",
-        "value": "true"
+        "name": "dataIP",
+        "label": "Data Server IP Address",
+        "type": "char",
+        "length": 15,
+        "value": "192.168.4.115"
     },
     {
-        "name": "isLights",
-        "label": "Lights",
-        "type": "bool",
-        "value": "false"
+        "name": "lightsIP",
+        "label": "Lights IP Address",
+        "type": "char",
+        "length": 15,
+        "value": "192.168.4.181"
+    },
+    {
+        "name": "gateIP",
+        "label": "Gate IP Address",
+        "type": "char",
+        "length": 15,
+        "value": "192.168.4.10"
     }
 ]
