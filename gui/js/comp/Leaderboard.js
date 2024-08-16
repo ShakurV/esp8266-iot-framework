@@ -263,7 +263,7 @@ export function Leaderboard(props) {
 
         bigData = await fetchData(fetchTableURL);
 
-        maxDataRows = 10;
+        maxDataRows = 20;
         includeHeader = 0;
         
         while(startIndex < count){
@@ -339,10 +339,10 @@ const getRowStyle = (rowIndex) => {
                 </h2>          
               <>
                 {/* sheet */}
+                {isLoading && <p>Loading data...</p>}
+                {error && <p>Error: {error}</p>}
                 {data.length > 0 && (
                   <>
-                    {isLoading && <p>Loading data...</p>}
-                    {error && <p>Error: {error}</p>}
                     <table>{renderTableBody()}</table>
                   </>
                 )}

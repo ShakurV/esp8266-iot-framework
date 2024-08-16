@@ -260,7 +260,7 @@ export function TimingPage(props) {
 
           bigData = await fetchData(fetchTableURL);
 
-          maxDataRows = 20;
+          maxDataRows = 25;
           includeHeader = 0;
           
           while(startIndex < count){
@@ -315,10 +315,11 @@ export function TimingPage(props) {
               </h2>          
               <>
                 {/* sheet */}
+                {isLoading && <p>Loading data...</p>}
+                {error && <p>Error: {error}</p>}
+
                 {data.length > 0 && (
                   <>
-                    {isLoading && <p>Loading data...</p>}
-                    {error && <p>Error: {error}</p>}
                     <table>{renderTableBody()}</table>
                   </>
                 )}

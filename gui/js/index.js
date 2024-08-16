@@ -21,14 +21,25 @@ import Config from "./configuration.json";
 import Dash from "./dashboard.json";
 
 let loc;
+
+
 if (Config.find(entry => entry.name === "language")) {
     loc = require("./lang/" + Config.find(entry => entry.name === "language").value + ".json");
 } else {
     loc = require("./lang/en.json");
 }
 
-let url = "http://192.168.4.177";
+let url = "http://192.168.4.1";
+if (Config.find(entry => entry.name === "hostIP")) {
+    url = Config.find(entry => entry.name === "hostIP").value
+}
+
 let dataServerUrl = "http://192.168.4.115";
+if (Config.find(entry => entry.name === "dataIP")) {
+    dataServerUrl = Config.find(entry => entry.name === "dataIP").value
+}
+
+
 if (process.env.NODE_ENV === "production") {url = window.location.origin;}
 
 if (process.env.NODE_ENV === "development") {require("preact/debug");}
