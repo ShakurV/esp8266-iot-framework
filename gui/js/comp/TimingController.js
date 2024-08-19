@@ -96,6 +96,7 @@ export function TimingController(props) {
       // Clear the time field (replace with actual logic based on your UI)
       setLastTime("");
     } catch (error) {
+      setError(error)
       console.error("Error starting timer:", error);
     }
   };
@@ -118,6 +119,8 @@ export function TimingController(props) {
         method: "POST",
       });
   
+      alert(await response.text())
+
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }else{
@@ -126,8 +129,10 @@ export function TimingController(props) {
   
       // You might want to display a success message or update UI state here
     } catch (error) {
+      setError(error)
       console.error("Error recording time:", error);
     }
+
   };
   
 
@@ -177,6 +182,9 @@ export function TimingController(props) {
       
       <StyledContainer>
         <StyledControlPanel>
+          {/* <div>
+            {error != null && <p>Error: {error}</p>}
+          </div> */}
           {/* Status */}
         <div>
         <StyledLabel htmlFor="status">Status:</StyledLabel>

@@ -33,5 +33,11 @@
         "type": "char",
         "length": 15,
         "value": "192.168.4.10"
+    },
+    {
+        "name": "showAllMenus",
+        "label": "Show All Menus",
+        "type": "bool",
+        "value": "true"
     }
 ]
