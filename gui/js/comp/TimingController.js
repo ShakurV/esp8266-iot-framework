@@ -111,7 +111,7 @@ export function TimingController(props) {
     }
   
     try {
-      const baseURL = `${props.API}/api/event/addTime`;
+      const baseURL = `${props.DSAPI}/api/event/addTime`;
       const url = `${baseURL}?driverNumber=${driverNumber}&time=${lastTime}`;
   
       const response = await fetch(url, {

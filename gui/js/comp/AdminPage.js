@@ -207,6 +207,7 @@ export function AdminPage(props) {
       <>
         <StyledContainer>
           <StyledControlPanel>
+            {error}
             <TimingController API={props.API} DSAPI = {props.DSAPI}
                                 socket={props.socket}
                                 onUpdateData={handleUpdateData}
