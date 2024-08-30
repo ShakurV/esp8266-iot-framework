@@ -43,12 +43,13 @@ function Root() {
     const [configData, setConfigData] = useState(new Object());
     const [binSize, setBinSize] = useState(0);
     const [socket, setSocket] = useState({});
+    const [dataServerUrl, setDataServerUrl] = useState(null); // Initialize as null
 
     useEffect(() => {
         const ws = new WebSocket(url.replace("http://","ws://").concat("/ws"));
         ws.addEventListener("message", wsMessage);
         setSocket(ws);
-        fetchData();        
+        fetchData() 
     }, []);
 
     function wsMessage(event) {
@@ -67,7 +68,11 @@ function Root() {
             .then((data) => {
                 setBinSize(data.byteLength);
                 setConfigData(bin2obj(data, Config));
-            });
+            })
+            .then(() => {
+                let configEntry = Config.find(entry => entry.name === "dataIP");
+                setDataServerUrl( `http://${configEntry ? configEntry.value : "192.168.4.115"}` );
+            })
     }
     console.log(configData["projectName"]);
     let projectName = configData["projectName"];
@@ -83,10 +88,10 @@ function Root() {
     //     projectVersion = Config.find(entry => entry.name === "dataIP") ? Config.find(entry => entry.name === "dataIP").value : "";
     // }
 
-    let dataServerUrl = `http://${configData["dataIP"]}`;
-    if (typeof dataServerUrl === "undefined") {
-        dataServerUrl = `http://${Config.find(entry => entry.name === "dataIP") ? Config.find(entry => entry.name === "dataIP").value : "192.168.4.115"}`;
-    }
+    // let dataServerUrl = `http://${configData["dataIP"]}`;
+    // if (typeof dataServerUrl === "undefined") {
+    //     dataServerUrl = `http://${Config.find(entry => entry.name === "dataIP") ? Config.find(entry => entry.name === "dataIP").value : "192.168.4.115"}`;
+    // }
 
     let showAll = configData["showAllMenus"];
     if (typeof dataServerUrl === "undefined") {

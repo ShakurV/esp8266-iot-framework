@@ -20,26 +20,31 @@ export function TimingController(props) {
     try {
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
+          throw new Error(`API request failed with status ${response.status}`);
       }
-      const data = await response.json();
-      return data;
+      return response.json();  
+    // Assuming the data is JSON
     } catch (err) {
       console.error("Error fetching data:", err);
       setError(err.message);
+      return Promise.reject(err); // Propagate the error
     } finally {
       setIsLoading(false);
     }
   };
 
   const fetchStatus = async () => {
-    const statusData = await fetchData(`${props.API}/api/event/getStatus`);
-    setStatus(statusData.status);
+     fetchData(`${props.API}/api/event/getStatus`).then(res => setStatus(res.status));
   };
 
   const fetchDriverList = async () => {
-    const data = await fetchData(`${props.DSAPI}/api/event/getDriverNumberList`);
-    setDriverList(Object.entries(data)); // Convert object to key-value pairs array
+    //console.log("data server IP = "+ props.DSAPI)
+    await fetchData(`${props.DSAPI}/api/event/getDriverNumberList`).then( res =>{
+      if(res != undefined){
+        setDriverList(Object.entries(res))
+      }
+    }
+    )
   };
 
   const fetchLastTime = async () => {
@@ -51,6 +56,7 @@ export function TimingController(props) {
   useEffect(() => {
 
     fetchStatus();
+    console.log ("use effect says = dsapi " + props.DSAPI)
     fetchDriverList();
     fetchLastTime();
 
@@ -68,11 +74,11 @@ export function TimingController(props) {
     setDriverNumber(event.target.value);
   };
 
-  // Function to handle form submission (for future use)
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    // Implement form submission logic here
-  };
+  // // Function to handle form submission (for future use)
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   // Implement form submission logic here
+  // };
 
   // Function to handle button clicks (replace with actual API calls)
   const handleStartTimer = async () => {

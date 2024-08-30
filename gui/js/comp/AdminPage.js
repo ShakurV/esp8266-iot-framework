@@ -208,10 +208,12 @@ export function AdminPage(props) {
         <StyledContainer>
           <StyledControlPanel>
             {error}
+            {props.DSAPI ? (
             <TimingController API={props.API} DSAPI = {props.DSAPI}
                                 socket={props.socket}
                                 onUpdateData={handleUpdateData}
                                 />
+                              ) : <p>Loading Controller</p>}
             </StyledControlPanel>
             <StyledControlPanel>
             {/* Form for adding new driver */}
