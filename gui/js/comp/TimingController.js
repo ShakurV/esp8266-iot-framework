@@ -213,7 +213,7 @@ export function TimingController(props) {
         {/* Buttons */}
         <StyledControlPanel>
           <StyledButton onClick={handleStartTimer} disabled={status !== 'Standby'}>Start Timer</StyledButton>
-          <StyledButton onClick={handleRecordTime} disabled={status !== 'Standby'}>Record Time</StyledButton>
+          <StyledButton onClick={handleRecordTime} /*disabled={status !== 'Standby'}*/>Record Time</StyledButton>
           <StyledButton onClick={handleStopTimer} disabled={status !== 'Running'}>Stop Timer</StyledButton>
           <StyledButton onClick={handleRefresh}>Refresh</StyledButton>
         </StyledControlPanel>
