@@ -29,7 +29,7 @@ if (Config.find(entry => entry.name === "language")) {
     loc = require("./lang/en.json");
 }
 
-let url = "http://192.168.4.1";
+let url = "http://192.168.4.188";
 
 if (process.env.NODE_ENV === "production") {url = window.location.origin;}
 
@@ -46,19 +46,19 @@ function Root() {
     const [dataServerUrl, setDataServerUrl] = useState(null); // Initialize as null
 
     useEffect(() => {
-        const ws = new WebSocket(url.replace("http://","ws://").concat("/ws"));
-        ws.addEventListener("message", wsMessage);
-        setSocket(ws);
+        // const ws = new WebSocket(url.replace("http://","ws://").concat("/ws"));
+        // ws.addEventListener("message", wsMessage);
+        // setSocket(ws);
         fetchData() 
     }, []);
 
-    function wsMessage(event) {
-        event.data.arrayBuffer().then((buffer) => {                
-            const dv = new DataView(buffer, 0);
-            const timestamp = dv.getUint32(0, true);
-            displayData.push([timestamp, bin2obj(buffer.slice(4,buffer.byteLength), Dash)]);     
-        });        
-    }
+    // function wsMessage(event) {
+    //     event.data.arrayBuffer().then((buffer) => {                
+    //         const dv = new DataView(buffer, 0);
+    //         const timestamp = dv.getUint32(0, true);
+    //         displayData.push([timestamp, bin2obj(buffer.slice(4,buffer.byteLength), Dash)]);     
+    //     });        
+    // }
 
     function fetchData() {
         fetch(`${url}/api/config/get`)
@@ -111,7 +111,7 @@ function Root() {
                     <li><NavLink onClick={() => setMenu(false)} exact to="/timing">{loc.titleTiming}</NavLink></li>
                     <li><NavLink onClick={() => setMenu(false)} exact to="/leaderboard">{loc.titleLeaderboard}</NavLink></li>
                     {showAll && <li><NavLink onClick={() => setMenu(false)} exact to="/wifi">{loc.titleWifi}</NavLink></li>         }
-                    {showAll && <li><NavLink onClick={() => setMenu(false)} exact to="/dashboard">{loc.titleDash}</NavLink></li>    }
+                    {/*showAll && <li><NavLink onClick={() => setMenu(false)} exact to="/dashboard">{loc.titleDash}</NavLink></li>    */}
                     {showAll && <li><NavLink onClick={() => setMenu(false)} exact to="/config">{loc.titleConf}</NavLink></li>       }
                     {showAll && <li><NavLink onClick={() => setMenu(false)} exact to="/files">{loc.titleFile}</NavLink></li>        }
                     {showAll && <li><NavLink onClick={() => setMenu(false)} exact to="/firmware">{loc.titleFw}</NavLink></li>       }
@@ -130,11 +130,11 @@ function Root() {
                             binSize={binSize}
                             requestUpdate={fetchData} />
                     </Route>
-                    <Route exact path="/dashboard">
+                    {/* <Route exact path="/dashboard">
                         <DashboardPage API={url} 
                             socket={socket}
                             requestData={() => {return displayData;}} />
-                    </Route>
+                    </Route> */}
                     <Route exact path="/timing">
                         <TimingPage API={dataServerUrl} 
                             socket={socket}
@@ -142,7 +142,7 @@ function Root() {
                             />
                     </Route>
                     <Route exact path="/">
-                        <AdminPage API={url} DSAPI = {dataServerUrl} 
+                        <AdminPage API={dataServerUrl} DSAPI = {dataServerUrl} 
                             socket={socket}
                             requestData={() => {return displayData;}}
                             />

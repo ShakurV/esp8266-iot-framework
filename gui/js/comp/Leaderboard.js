@@ -183,8 +183,8 @@ if (Config.find(entry => entry.name === "language")) {
 
 export function Leaderboard(props) {
 
-  const [counter, setCounter] = useState(0);
-  const [socketStatus, setSocketStatus] = useState(0);
+  // const [counter, setCounter] = useState(0);
+  // const [socketStatus, setSocketStatus] = useState(0);
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
   const [error, setError] = useState(null); // State to handle errors
 
@@ -196,17 +196,17 @@ export function Leaderboard(props) {
   }, []);
 
   // Fucntion to update connection status
-  useEffect(() => {
-      const timer = setTimeout(() => {
-          setCounter(counter => counter + 1);
-          if (!(socketStatus == 0 && props.socket.readyState != 1)) {
-              setSocketStatus(props.socket.readyState);
-          }
-      }, 40); //refresh with 25FPS
+  // useEffect(() => {
+  //     const timer = setTimeout(() => {
+  //         setCounter(counter => counter + 1);
+  //         if (!(socketStatus == 0 && props.socket.readyState != 1)) {
+  //             setSocketStatus(props.socket.readyState);
+  //         }
+  //     }, 40); //refresh with 25FPS
 
-      return () => clearTimeout(timer);
+  //     return () => clearTimeout(timer);
 
-  }, [counter]);
+  // }, [counter]);
 
   const [data, setData] = useState([]); // State to store API response
   
@@ -327,7 +327,7 @@ const getRowStyle = (rowIndex) => {
               
                 <h2>
                 Leaderboard
-                {socketStatus != 0 ? (
+                {/* {socketStatus != 0 ? (
                 socketStatus === 1 ? (
                   <Live>{loc.dashLive}</Live>
                 ) : (
@@ -335,7 +335,7 @@ const getRowStyle = (rowIndex) => {
                 )
               ) : (
                 <Connecting>{loc.dashConn}</Connecting>
-              )}
+              )} */}
                 </h2>          
               <>
                 {/* sheet */}

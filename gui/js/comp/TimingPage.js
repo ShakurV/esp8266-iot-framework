@@ -181,7 +181,7 @@ let loc = require("../lang/en.json");
 export function TimingPage(props) {
 
     const [counter, setCounter] = useState(0);
-    const [socketStatus, setSocketStatus] = useState(0);
+    // const [socketStatus, setSocketStatus] = useState(0);
     const [isLoading, setIsLoading] = useState(false); // State for loading indicator
     const [error, setError] = useState(null); // State to handle errors
 
@@ -193,17 +193,17 @@ export function TimingPage(props) {
     }, []);
 
     // Fucntion to update connection status
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setCounter(counter => counter + 1);
-            if (!(socketStatus == 0 && props.socket.readyState != 1)) {
-                setSocketStatus(props.socket.readyState);
-            }
-        }, 40); //refresh with 25FPS
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setCounter(counter => counter + 1);
+    //         if (!(socketStatus == 0 && props.socket.readyState != 1)) {
+    //             setSocketStatus(props.socket.readyState);
+    //         }
+    //     }, 40); //refresh with 25FPS
 
-        return () => clearTimeout(timer);
+    //     return () => clearTimeout(timer);
 
-    }, [counter]);
+    // }, [counter]);
 
     const [data, setData] = useState([]); // State to store API response
     
@@ -306,7 +306,7 @@ export function TimingPage(props) {
             <TableWrapper>
 
               <h2>
-              {loc.titleTiming} {socketStatus != 0 ? (
+              {loc.titleTiming} {/*socketStatus != 0 ? (
                 socketStatus === 1 ? (
                   <Live>{loc.dashLive}</Live>
                 ) : (
@@ -314,7 +314,7 @@ export function TimingPage(props) {
                 )
               ) : (
                 <Connecting>{loc.dashConn}</Connecting>
-              )}
+              )} */}
               </h2>          
               <>
                 {/* sheet */}
