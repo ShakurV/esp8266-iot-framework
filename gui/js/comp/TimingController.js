@@ -64,7 +64,7 @@ export function TimingController(props) {
     const intervalId = setInterval(async () => {
       await fetchStatus();
       //await fetchLastTime();
-    }, 1000); // 1 second interval (1 FPS)
+    }, 5000); // 5 second interval
 
     return () => clearInterval(intervalId); // Clear interval on unmount
   }, []);
