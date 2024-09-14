@@ -248,6 +248,7 @@ export function TimingPage(props) {
           console.log(fetchDriverListURL);
           
           const driverList = await fetchData(fetchDriverListURL);
+          if(driverList){
           console.log(driverList);
           
           var key, count = 0;
@@ -274,9 +275,10 @@ export function TimingPage(props) {
           }
           
           setData(bigData);
-          //console.log("fuck you");
           console.log(data);
-          
+        }else{
+          console.log("No Drivers");
+        }
       } catch (err) {
           console.error(err);
       }
@@ -325,6 +327,10 @@ export function TimingPage(props) {
                   <>
                     <table>{renderTableBody()}</table>
                   </>
+                )}
+
+                {data.length == 0 && (
+                  <p>No Entries Loaded, Entries can be loaded in from the Admin Page</p>
                 )}
               </>
               

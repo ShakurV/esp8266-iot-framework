@@ -55,18 +55,18 @@ export function TimingController(props) {
   // Effect to fetch initial data and set up refresh interval
   useEffect(() => {
 
-    fetchStatus();
+    // fetchStatus();
     console.log ("use effect says = dsapi " + props.DSAPI)
     fetchDriverList();
     fetchLastTime();
 
-    // Set up interval to refresh data periodically
-    const intervalId = setInterval(async () => {
-      await fetchStatus();
-      //await fetchLastTime();
-    }, 5000); // 5 second interval
+    // // Set up interval to refresh data periodically
+    // const intervalId = setInterval(async () => {
+    //   await fetchStatus();
+    //   //await fetchLastTime();
+    // }, 5000); // 5 second interval
 
-    return () => clearInterval(intervalId); // Clear interval on unmount
+    // return () => clearInterval(intervalId); // Clear interval on unmount
   }, []);
 
   // Function to handle driver selection
@@ -192,10 +192,10 @@ export function TimingController(props) {
             {error != null && <p>Error: {error}</p>}
           </div> */}
           {/* Status */}
-        <div>
+        {/*<div>
         <StyledLabel htmlFor="status">Status:</StyledLabel>
         <span id="status">{status}</span>
-        </div>
+        </div>*/}
           {/* Driver */}
           <div>
             <StyledLabel htmlFor="driver">Driver:</StyledLabel>
@@ -218,10 +218,10 @@ export function TimingController(props) {
         </StyledControlPanel>
         {/* Buttons */}
         <StyledControlPanel>
-          <StyledButton onClick={handleStartTimer} disabled={status !== 'Standby'}>Start Timer</StyledButton>
-          <StyledButton onClick={handleRecordTime} /*disabled={status !== 'Standby'}*/>Record Time</StyledButton>
-          <StyledButton onClick={handleStopTimer} disabled={status !== 'Running'}>Stop Timer</StyledButton>
-          <StyledButton onClick={handleRefresh}>Refresh</StyledButton>
+          {/*<StyledButton onClick={handleStartTimer} disabled={status !== 'Standby'}>Start Timer</StyledButton>*/}
+          <StyledButton onClick={handleRecordTime}>Record Time</StyledButton>
+          {/*<StyledButton onClick={handleStopTimer} disabled={status !== 'Running'}>Stop Timer</StyledButton>*/}
+          <StyledButton onClick={handleRefresh}>Fetch Time</StyledButton>
         </StyledControlPanel>
       </StyledContainer>
     </StyledControl>

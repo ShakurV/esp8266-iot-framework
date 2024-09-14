@@ -248,6 +248,8 @@ export function Leaderboard(props) {
         const fetchDriverListURL = `${props.API}/api/event/getDriverNumberList`;
         
         const driverList = await fetchData(fetchDriverListURL);
+
+        if(driverList){
         console.log(driverList);
         
         var key, count = 0;
@@ -274,8 +276,10 @@ export function Leaderboard(props) {
         }
         
         setData(bigData);
-        //console.log("fuck you");
         console.log(data);
+      }else{
+        console.log("No Drivers");
+      }
         
     } catch (err) {
         console.error(err);
@@ -345,6 +349,10 @@ const getRowStyle = (rowIndex) => {
                   <>
                     <table>{renderTableBody()}</table>
                   </>
+                )}
+
+                {data.length == 0 && (
+                  <p>No Entries Loaded, Entries can be loaded in from the Admin Page</p>
                 )}
               </>
               
