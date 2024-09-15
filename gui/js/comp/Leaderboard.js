@@ -351,7 +351,7 @@ const getRowStyle = (rowIndex) => {
                   </>
                 )}
 
-                {data.length == 0 && (
+                {data.length == 0 && !isLoading && (
                   <p>No Entries Loaded, Entries can be loaded in from the Admin Page</p>
                 )}
               </>
