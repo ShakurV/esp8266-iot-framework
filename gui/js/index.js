@@ -29,7 +29,7 @@ if (Config.find(entry => entry.name === "language")) {
     loc = require("./lang/en.json");
 }
 
-let url = "http://192.168.4.188";
+let url = "http://192.168.4.1";
 
 if (process.env.NODE_ENV === "production") {url = window.location.origin;}
 
@@ -49,6 +49,8 @@ function Root() {
         // const ws = new WebSocket(url.replace("http://","ws://").concat("/ws"));
         // ws.addEventListener("message", wsMessage);
         // setSocket(ws);
+        setDataServerUrl( `http://192.168.4.165` );
+
         fetchData() 
     }, []);
 
@@ -71,7 +73,7 @@ function Root() {
             })
             .then(() => {
                 let configEntry = Config.find(entry => entry.name === "dataIP");
-                setDataServerUrl( `http://${configEntry ? configEntry.value : "192.168.4.115"}` );
+                setDataServerUrl( `http://${configEntry ? configEntry.value : "192.168.4.165"}` );
             })
     }
     console.log(configData["projectName"]);
@@ -79,19 +81,11 @@ function Root() {
     if (typeof projectName === "undefined") {
         projectName = Config.find(entry => entry.name === "projectName") ? Config.find(entry => entry.name === "projectName").value : "ESP8266";
     }
+
     let projectVersion = configData["projectVersion"];
     if (typeof projectVersion === "undefined") {
         projectVersion = Config.find(entry => entry.name === "projectVersion") ? Config.find(entry => entry.name === "projectVersion").value : "";
     }
-    // url = configData["hostIP"];
-    // if (typeof projectVersion === "undefined") {
-    //     projectVersion = Config.find(entry => entry.name === "dataIP") ? Config.find(entry => entry.name === "dataIP").value : "";
-    // }
-
-    // let dataServerUrl = `http://${configData["dataIP"]}`;
-    // if (typeof dataServerUrl === "undefined") {
-    //     dataServerUrl = `http://${Config.find(entry => entry.name === "dataIP") ? Config.find(entry => entry.name === "dataIP").value : "192.168.4.115"}`;
-    // }
 
     let showAll = configData["showAllMenus"];
     if (typeof dataServerUrl === "undefined") {

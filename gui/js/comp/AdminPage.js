@@ -83,6 +83,23 @@ const StyledButton = styled.button`
   width: ${baseControlWidth};
 `;
 
+const StyledRedButton = styled.button`
+  display: flex;
+  padding: 8px 16px;
+  margin: 5px;
+  border: none;
+  border-radius: ${baseBorderRadius};
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  font-size: ${baseFontSize};
+  cursor: pointer;
+  &:disabled {
+    opacity: 0.5;
+  }
+  width: ${baseControlWidth};
+`;
+
 const StyledSpan = styled.span`
   font-size: ${baseFontSize};
 `;
@@ -195,6 +212,27 @@ export function AdminPage(props) {
       }
     };
     
+    const handleDeleteAll = async () => {
+    
+      try {
+        if(confirm("Are you sure you want to delete all entries? This action cannot be undone!")){
+
+        const response = await fetch(`${props.DSAPI}/api/event/clearEntries`, {
+          method: "DELETE",
+        });
+      
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+      
+        location.reload();
+      }
+      } catch (err) {
+        console.error("Error adding driver:", err);
+        setError(err.message);
+      }
+    };
+
     //flags to update table data
     const handleUpdateData = (state) => {
       // Update data logic (optional)
@@ -255,6 +293,7 @@ export function AdminPage(props) {
               onChange={(e) => setVehicle(e.target.value)}
             />
             <StyledButton  type="submit">Add Entry</StyledButton >
+            <StyledRedButton type="button" onClick={() => handleDeleteAll()}>Delete All Entries</StyledRedButton >
             </StyledForm>
           </StyledControlPanel>
           {/* Rest of your form or other elements */}
