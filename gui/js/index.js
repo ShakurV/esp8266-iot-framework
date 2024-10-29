@@ -29,7 +29,7 @@ if (Config.find(entry => entry.name === "language")) {
     loc = require("./lang/en.json");
 }
 
-let url = "http://192.168.4.1";
+let url = "http://192.168.3.23";
 
 if (process.env.NODE_ENV === "production") {url = window.location.origin;}
 
@@ -49,7 +49,7 @@ function Root() {
         // const ws = new WebSocket(url.replace("http://","ws://").concat("/ws"));
         // ws.addEventListener("message", wsMessage);
         // setSocket(ws);
-        setDataServerUrl( `http://192.168.4.165` );
+        setDataServerUrl( `http://192.168.3.23` );
 
         fetchData() 
     }, []);
@@ -73,7 +73,7 @@ function Root() {
             })
             .then(() => {
                 let configEntry = Config.find(entry => entry.name === "dataIP");
-                setDataServerUrl( `http://${configEntry ? configEntry.value : "192.168.4.165"}` );
+                setDataServerUrl( `http://${configEntry ? configEntry.value : "http://192.168.3.23"}` );
             })
     }
     console.log(configData["projectName"]);
