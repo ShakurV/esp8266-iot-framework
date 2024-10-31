@@ -120,7 +120,7 @@ export {
   StyledOption,
   StyledForm,
   StyledControl,
-  StyledContainer
+  StyledContainer,
 };
 
 import Config from "../configuration.json";
@@ -255,6 +255,9 @@ export function AdminPage(props) {
               onChange={(e) => setVehicle(e.target.value)}
             />
             <StyledButton  type="submit">Add Entry</StyledButton >
+            <StyledButton type="">Delete All Runs</StyledButton>
+            <StyledButton type="">Delete Entry</StyledButton>
+            <StyledButton type="">Delete All Entries</StyledButton>
             </StyledForm>
           </StyledControlPanel>
           {/* Rest of your form or other elements */}
