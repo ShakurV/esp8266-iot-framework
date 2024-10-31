@@ -83,6 +83,23 @@ const StyledButton = styled.button`
   width: ${baseControlWidth};
 `;
 
+const StyledRedButton = styled.button`
+  display: flex;
+  padding: 8px 16px;
+  margin: 5px;
+  border: none;
+  border-radius: ${baseBorderRadius};
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  font-size: ${baseFontSize};
+  cursor: pointer;
+  &:disabled {
+    opacity: 0.5;
+  }
+  width: ${baseControlWidth};
+`;
+
 const StyledSpan = styled.span`
   font-size: ${baseFontSize};
 `;
@@ -120,7 +137,7 @@ export {
   StyledOption,
   StyledForm,
   StyledControl,
-  StyledContainer,
+  StyledContainer
 };
 
 import Config from "../configuration.json";
@@ -195,6 +212,92 @@ export function AdminPage(props) {
       }
     };
     
+    const handleDeleteAll = async () => {
+    
+      try {
+        if(confirm("Are you sure you want to delete all entries? This action cannot be undone!")){
+
+        const response = await fetch(`${props.DSAPI}/api/event/clearEntries`, {
+          method: "DELETE",
+        });
+      
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+      
+        location.reload();
+      }
+      } catch (err) {
+        console.error("Error deleting drivers:", err);
+        setError(err.message);
+      }
+    };
+
+    const handleDeleteAllRuns = async () => {
+    
+      try {
+        if(confirm("Are you sure you want to delete all runs? This action cannot be undone!")){
+
+        const response = await fetch(`${props.DSAPI}/api/event/deleteRuns`, {
+          method: "DELETE",
+        });
+      
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+      
+        location.reload();
+      }
+      } catch (err) {
+        console.error("Error deleting driver runs:", err);
+        setError(err.message);
+      }
+    };
+
+    const handleDeleteDriverRuns = async () => {
+    
+      try {
+        if(confirm(`Are you sure you want to delete all runs for driver #${driverNumber}? This action cannot be undone!`)){
+        
+        console.log(`${props.DSAPI}/api/event/deleteRuns?driverNumber=${driverNumber}`);
+
+        const response = await fetch(`${props.DSAPI}/api/event/deleteRuns?driverNumber=${driverNumber}`, {
+          method: "DELETE"
+        });
+      
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+      
+        location.reload();
+        }
+      } catch (err) {
+        console.error("Error deleting driver runs:", err);
+        setError(err.message);
+      }
+    };
+
+    const handleDeleteDriver = async () => {
+    
+      try {
+        if(confirm("Are you sure you want to delete all runs? This action cannot be undone!")){
+
+        const response = await fetch(`${props.DSAPI}/api/event/deleteRuns?driverNumber=${driverNumber}`, {
+          method: "DELETE",
+        });
+      
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+      
+        location.reload();
+      }
+      } catch (err) {
+        console.error("Error deleting driver runs:", err);
+        setError(err.message);
+      }
+    };
+
     //flags to update table data
     const handleUpdateData = (state) => {
       // Update data logic (optional)
@@ -254,10 +357,11 @@ export function AdminPage(props) {
               value={vehicle}
               onChange={(e) => setVehicle(e.target.value)}
             />
-            <StyledButton  type="submit">Add Entry</StyledButton >
-            <StyledButton type="">Delete All Runs</StyledButton>
-            <StyledButton type="">Delete Entry</StyledButton>
-            <StyledButton type="">Delete All Entries</StyledButton>
+            <StyledButton  type="submit">Add/Update Entry</StyledButton >
+            <StyledRedButton type="button" onClick={() => handleDeleteDriver()}>Delete Driver</StyledRedButton >
+            <StyledRedButton type="button" onClick={() => handleDeleteDriverRuns()}>Delete Driver Runs</StyledRedButton >
+            <StyledRedButton type="button" onClick={() => handleDeleteAll()}>Delete All Entries</StyledRedButton >
+            <StyledRedButton type="button" onClick={() => handleDeleteAllRuns()}>Delete All Runs</StyledRedButton >
             </StyledForm>
           </StyledControlPanel>
           {/* Rest of your form or other elements */}
