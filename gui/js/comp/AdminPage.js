@@ -359,8 +359,8 @@ export function AdminPage(props) {
             />
             <StyledButton  type="submit">Add/Update Entry</StyledButton >
             <StyledRedButton type="button" onClick={() => handleDeleteDriver()}>Delete Driver</StyledRedButton >
-            <StyledRedButton type="button" onClick={() => handleDeleteDriverRuns()}>Delete Driver Runs</StyledRedButton >
-            <StyledRedButton type="button" onClick={() => handleDeleteAll()}>Delete All Entries</StyledRedButton >
+            {/*<StyledRedButton type="button" onClick={() => handleDeleteDriverRuns()}>Delete Driver Runs</StyledRedButton >
+            <StyledRedButton type="button" onClick={() => handleDeleteAll()}>Delete All Entries</StyledRedButton > DISABLED TILL CORS ISSUES IS RESOLVED*/}
             <StyledRedButton type="button" onClick={() => handleDeleteAllRuns()}>Delete All Runs</StyledRedButton >
             </StyledForm>
           </StyledControlPanel>

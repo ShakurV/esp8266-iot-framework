@@ -33,10 +33,6 @@ export function TimingController(props) {
     }
   };
 
-  const fetchStatus = async () => {
-     fetchData(`${props.API}/api/event/getStatus`).then(res => setStatus(res.status));
-  };
-
   const fetchDriverList = async () => {
     //console.log("data server IP = "+ props.DSAPI)
     await fetchData(`${props.DSAPI}/api/event/getDriverNumberList`).then( res =>{
@@ -60,13 +56,6 @@ export function TimingController(props) {
     fetchDriverList();
     fetchLastTime();
 
-    // // Set up interval to refresh data periodically
-    // const intervalId = setInterval(async () => {
-    //   await fetchStatus();
-    //   //await fetchLastTime();
-    // }, 5000); // 5 second interval
-
-    // return () => clearInterval(intervalId); // Clear interval on unmount
   }, []);
 
   // Function to handle driver selection
@@ -74,44 +63,7 @@ export function TimingController(props) {
     setDriverNumber(event.target.value);
   };
 
-  // // Function to handle form submission (for future use)
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   // Implement form submission logic here
-  // };
-
-  // Function to handle button clicks (replace with actual API calls)
-  const handleStartTimer = async () => {
-    console.log("ligma");
-
-    if (status !== 'Standby') {
-      return; // Prevent action if not in Standby state
-    }
-  
-    try {
-      const response = await fetch(`${props.API}/api/event/startTiming`, {
-        method: 'POST', // Use POST for sending data
-      });
-  
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-    
-      console.log("Start timer response:", data); // Log the response for debugging
-  
-      // Clear the time field (replace with actual logic based on your UI)
-      setLastTime("");
-    } catch (error) {
-      setError(error)
-      console.error("Error starting timer:", error);
-    }
-  };
-
-  const handleRecordTime = async () => {
-    if (status !== 'Standby') {
-      return; // Prevent action if not in Standby state
-    }
-  
+  const handleRecordTime = async () => {  
     if (!driverNumber || !lastTime) {
       console.warn("Missing driver or time. Cannot record time.");
       return; // Prevent call if driver or time is missing
@@ -140,38 +92,9 @@ export function TimingController(props) {
     }
 
   };
-  
-
-  const handleStopTimer = async () => {
-    if (status !== 'Running') {
-      return; // Prevent action if not in Running state
-    }
-  
-    try {
-      const response = await fetch(`${props.API}/api/event/stopTiming`, {
-        method: 'POST', // Use POST for sending data (might vary depending on your API)
-      });
-  
-      if (!response.ok) {
-        
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-  
-      const data = await response.json(); // Handle response data (if needed)
-  
-      console.log("Stop timer response:", data); // Log the response for debugging
-  
-      // You might want to update the UI state or display a message here
-    } catch (error) {
-      console.error("Error stopping timer:", error);
-    }
-
-    fetchLastTime();
-  };
 
   const handleRefresh = async () => {
     props.onUpdateData(true);
-    fetchStatus();
     fetchDriverList();
     fetchLastTime();
   };
