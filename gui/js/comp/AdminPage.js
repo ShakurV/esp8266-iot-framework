@@ -75,30 +75,33 @@ const StyledButton = styled.button`
   background-color: ${({ disabled }) => (disabled ? '#ccc' : '#4CAF50')};
   color: white;
   font-weight: bold;
-  font-size: ${baseFontSize};
+  font-size: 0.6em;
   cursor: pointer;
   &:disabled {
     opacity: 0.5;
   }
-  width: ${baseControlWidth};
+  width: 145px;
 `;
 
 const StyledRedButton = styled.button`
-  display: flex;
+  display: inline-block;
   padding: 8px 16px;
-  margin: 5px;
+   margin: 150px;
+  margin-bottom: -09px;
+  margin-top: -44px; /* Adjust the value as needed */
   border: none;
   border-radius: ${baseBorderRadius};
   background-color: red;
   color: white;
   font-weight: bold;
-  font-size: ${baseFontSize};
+  font-size: 0.6em;
   cursor: pointer;
   &:disabled {
     opacity: 0.5;
   }
-  width: ${baseControlWidth};
+  width: 145px;
 `;
+
 
 const StyledSpan = styled.span`
   font-size: ${baseFontSize};
