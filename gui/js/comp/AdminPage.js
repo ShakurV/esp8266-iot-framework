@@ -72,7 +72,7 @@ const StyledButton = styled.button`
   margin: 5px;
   border: none;
   border-radius: ${baseBorderRadius};
-  background-color: ${({ disabled }) => (disabled ? '#ccc' : '#4CAF50')};
+  background-color: ${({ disabled }) => (disabled ? '#ccc' : '#4CAF50')};    
   color: white;
   font-weight: bold;
   font-size: 0.6em;
@@ -83,25 +83,22 @@ const StyledButton = styled.button`
   width: 145px;
 `;
 
-const StyledRedButton = styled.button`
-  display: inline-block;
-  padding: 8px 16px;
-   margin: 150px;
-  margin-bottom: -09px;
-  margin-top: -44px; /* Adjust the value as needed */
-  border: none;
-  border-radius: ${baseBorderRadius};
-  background-color: red;
-  color: white;
-  font-weight: bold;
-  font-size: 0.6em;
-  cursor: pointer;
-  &:disabled {
-    opacity: 0.5;
-  }
-  width: 145px;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: -5px;
+  
+  
 `;
 
+const ButtonWarning = styled.div`
+  display: flex;
+    button {
+    background-color: red; 
+    color: white;
+  }
+`;
 
 const StyledSpan = styled.span`
   font-size: ${baseFontSize};
@@ -360,18 +357,22 @@ export function AdminPage(props) {
               value={vehicle}
               onChange={(e) => setVehicle(e.target.value)}
             />
+             <ButtonContainer>
             <StyledButton  type="submit">Add/Update Entry</StyledButton >
-            <StyledRedButton type="button" onClick={() => handleDeleteDriver()}>Delete Driver</StyledRedButton >
-            <StyledRedButton type="button" onClick={() => handleDeleteDriverRuns()}>Delete Driver Runs</StyledRedButton >
-            <StyledRedButton type="button" onClick={() => handleDeleteAll()}>Delete All Entries</StyledRedButton >
-            <StyledRedButton type="button" onClick={() => handleDeleteAllRuns()}>Delete All Runs</StyledRedButton >
+            <ButtonWarning>
+            <StyledButton type="button" onClick={() => handleDeleteDriver()}>Delete Driver</StyledButton >
+            <StyledButton type="button" onClick={() => handleDeleteDriverRuns()}>Delete Driver Runs</StyledButton >
+            <StyledButton type="button" onClick={() => handleDeleteAll()}>Delete All Entries</StyledButton >
+            <StyledButton type="button" onClick={() => handleDeleteAllRuns()}>Delete All Runs</StyledButton >
+            </ButtonWarning>
+            </ButtonContainer>
             </StyledForm>
           </StyledControlPanel>
           {/* Rest of your form or other elements */}
         </StyledContainer>
         </>
 
-    );
+    );  
 }
 
 AdminPage.propTypes = {    
