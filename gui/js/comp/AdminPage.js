@@ -72,47 +72,89 @@ const StyledButton = styled.button`
   margin: 5px;
   border: none;
   border-radius: ${baseBorderRadius};
-  background-color: ${({ disabled }) => (disabled ? '#ccc' : '#4CAF50')};    
+  background-color: ${({ disabled }) => (disabled ? '#ccc' : '#4CAF50')};
   color: white;
   font-weight: bold;
   font-size: 0.6em;
   cursor: pointer;
+  position: relative; /* Required for positioning the tooltip */
+
+  &:hover {
+    background-color: ${({ disabled }) => (disabled ? '#ccc' : '#388E3C')};
+  }
+
   &:disabled {
     opacity: 0.5;
+    cursor: not-allowed; 
   }
-  width: 145px;
+
+  &:hover::after {
+    content: attr(data-tooltip); /* Use the data-tooltip attribute for dynamic tooltips */
+    position: absolute;
+    bottom: 100%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.7em;
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* Start hidden */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.7em;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+  }
 `;
+
 
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: -5px;
-  
-  
 `;
 
 const ButtonWarning = styled.div`
   display: flex;
-    button {
-    background-color: red; 
+  button {
+    background-color: red;
     color: white;
+    &:hover {
+      background-color: darkred; 
+    }
   }
 `;
+
 
 const StyledSpan = styled.span`
   font-size: ${baseFontSize};
 `;
 
 const StyledOption = styled.option`
-  /* Add your desired styles here */
   padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 4px;
 
-  /* Optional: Hover and selected states */
   &:hover {
     background-color: #f5f5f5;
   }
@@ -358,14 +400,41 @@ export function AdminPage(props) {
               onChange={(e) => setVehicle(e.target.value)}
             />
              <ButtonContainer>
-            <StyledButton  type="submit">Add/Update Entry</StyledButton >
-            <ButtonWarning>
-            <StyledButton type="button" onClick={() => handleDeleteDriver()}>Delete Driver</StyledButton >
-            <StyledButton type="button" onClick={() => handleDeleteDriverRuns()}>Delete Driver Runs</StyledButton >
-            <StyledButton type="button" onClick={() => handleDeleteAll()}>Delete All Entries</StyledButton >
-            <StyledButton type="button" onClick={() => handleDeleteAllRuns()}>Delete All Runs</StyledButton >
-            </ButtonWarning>
-            </ButtonContainer>
+  <StyledButton type="submit" data-tooltip="Add or update an entry">
+    Add/Update Entry
+  </StyledButton>
+  <ButtonWarning>
+    <StyledButton 
+      type="button" 
+      data-tooltip="Delete the current driver"
+      onClick={() => handleDeleteDriver()}
+    >
+      Delete Driver
+    </StyledButton>
+    <StyledButton 
+      type="button" 
+      data-tooltip="Delete all runs for the current driver"
+      onClick={() => handleDeleteDriverRuns()}
+    >
+      Delete Driver Runs
+    </StyledButton>
+    <StyledButton 
+      type="button" 
+      data-tooltip="Delete all entries in the system"
+      onClick={() => handleDeleteAll()}
+    >
+      Delete All Entries
+    </StyledButton>
+    <StyledButton 
+      type="button" 
+      data-tooltip="Delete all runs in the system"
+      onClick={() => handleDeleteAllRuns()}
+    >
+      Delete All Runs
+    </StyledButton>
+  </ButtonWarning>
+</ButtonContainer>
+
             </StyledForm>
           </StyledControlPanel>
           {/* Rest of your form or other elements */}
