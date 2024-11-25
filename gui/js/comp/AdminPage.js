@@ -77,7 +77,7 @@ const StyledButton = styled.button`
   font-weight: bold;
   font-size: 0.6em;
   cursor: pointer;
-  position: relative; /* Required for positioning the tooltip */
+  position: relative; 
 
   &:hover {
     background-color: ${({ disabled }) => (disabled ? '#ccc' : '#388E3C')};
@@ -89,9 +89,9 @@ const StyledButton = styled.button`
   }
 
   &:hover::after {
-    content: attr(data-tooltip); /* Use the data-tooltip attribute for dynamic tooltips */
+    content: attr(data-tooltip); 
     position: absolute;
-    bottom: 100%; /* Position above the button */
+    bottom: 100%; 
     left: 50%;
     transform: translateX(-50%);
     background-color: black;
@@ -108,7 +108,7 @@ const StyledButton = styled.button`
   &::after {
     content: '';
     position: absolute;
-    bottom: 100%; /* Start hidden */
+    bottom: 100%; 
     left: 50%;
     transform: translateX(-50%);
     background-color: black;
